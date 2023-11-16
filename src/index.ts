@@ -1,6 +1,7 @@
 import express, { Request, Response } from "express";
 import userRouter from "./routes/userRoutes";
 import connectToDatabase from "./services/database";
+import bodyParser from "body-parser";
 
 const app = express();
 const port = 3000;
@@ -8,13 +9,9 @@ const port = 3000;
 app.get("/", (req: Request, res: Response) => {
   res.send("Hello, World!");
 });
+app.use(bodyParser.json())
 
 app.get("/test-users",  async (req: Request, res: Response) => {
-  // connection.query("SELECT * FROM users", (err, rows, fields) => {
-  //   if (!err) {
-  //     res.send(rows);
-  //   } else console.log(err);
-  // });
   const pool : any = await connectToDatabase();
   const connection = await pool.getConnection();
   const [rows]:any = await connection.query("SELECT * FROM users");

@@ -25,7 +25,6 @@ export const userModel = {
       const pool = await connectToDatabase();
       const connection = await pool.getConnection();
       const [user] = await connection.query("SELECT * FROM users WHERE id = ?", [userId]);
-      console.log(user.constructor);
       connection.release();
       return user as any;
     } catch (error) {
@@ -37,6 +36,8 @@ export const userModel = {
     try {
       const pool = await connectToDatabase();
       const connection = await pool.getConnection();
+      console.log(user);
+
       const result = await connection.query("INSERT INTO users SET ?", user);
       connection.release();
       return result;
@@ -49,6 +50,7 @@ export const userModel = {
     try {
       const pool = await connectToDatabase();
       const connection = await pool.getConnection();
+      
       const result = await connection.query("UPDATE users SET ? WHERE id = ?", [userData, userId]);
       connection.release();
       return result;
