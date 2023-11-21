@@ -1,0 +1,63 @@
+import { propertyService } from "../services/propertyServices";
+import { Request, Response } from 'express';
+
+export const propertyController = {
+  getAllProperties: async (req: Request, res: Response): Promise<void> => {
+    try {
+      const properties = await propertyService.getAllProperties();
+      res.status(200).json(properties);
+    } catch (error) {
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  },
+
+  getPropertyById: async (req: Request, res: Response): Promise<void> => {
+    const propertyId = req.params.id.slice(1);
+
+    try {
+      const property = await propertyService.getPropertyById(Number(propertyId));
+      if (!property) {
+        res.status(404).json({ error: 'Property not found' });
+        return;
+      }
+
+      res.status(200).json(property);
+    } catch (error) {
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  },
+
+  createProperty: async (req: Request, res: Response): Promise<void> => {
+    const newProperty = req.body;
+    
+    try {
+      await propertyService.createProperty(newProperty);
+      res.status(201).json({ message: 'Property created successfully' });
+    } catch (error) {
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  },
+
+  updateProperty: async (req: Request, res: Response): Promise<void> => {
+    const propertyId = req.params.id;
+    const propertyData = req.body;
+
+    try {
+      await propertyService.updateProperty(Number(propertyId), propertyData);
+      res.status(200).json({ message: 'Property updated successfully' });
+    } catch (error) {
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  },
+
+  deleteProperty: async (req: Request, res: Response): Promise<void> => {
+    const propertyId = req.params.id;
+    
+    try {
+      await propertyService.deleteProperty(Number(propertyId));
+      res.status(200).json({ message: 'Property deleted successfully' });
+    } catch (error) {
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  },
+};

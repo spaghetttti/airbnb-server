@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import userRouter from "./routes/userRoutes";
 import connectToDatabase from "./services/database";
 import bodyParser from "body-parser";
+import propertyRouter from "./routes/propertyRoutes";
 
 const app = express();
 const port = 3000;
@@ -9,6 +10,7 @@ const port = 3000;
 app.get("/", (req: Request, res: Response) => {
   res.send("Hello, World!");
 });
+
 app.use(bodyParser.json())
 
 app.get("/test-users",  async (req: Request, res: Response) => {
@@ -19,7 +21,9 @@ app.get("/test-users",  async (req: Request, res: Response) => {
   connection.release();
 });
 
-app.use('/api', userRouter);
+app.use('/api/users', userRouter);
+app.use('/api/properties', propertyRouter);
+
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);

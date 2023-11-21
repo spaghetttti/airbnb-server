@@ -23,8 +23,12 @@ export const userService = {
     return userModel.updateUser(userId, userData);
   },
 
-  deleteUser: (userId: number) => {
-    return userModel.deleteUser(userId);
+  deleteUser: async (userId: number): Promise<any[]> => {
+    try {
+      return await userModel.deleteUser(userId);
+    } catch(error) {
+      throw new Error('Error retrieving user for deleting');
+    }
   },
 };
 

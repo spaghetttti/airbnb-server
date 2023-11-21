@@ -53,13 +53,14 @@ export const userController = {
   },
 
   deleteUser: async (req: Request, res: Response): Promise<void> => {
-    const userId: string = req.params.id;
+    const userId: string = req.params.id.slice(1);
     
     try {
-      await userService.deleteUser(Number(userId));
+      console.log(await userService.deleteUser(Number(userId)));
+      
       res.status(200).json({ message: 'User deleted successfully' });
     } catch (error) {
-      res.status(500).json({ error: 'Internal Server Error' });
+      res.status(500).json({ error: 'Internal Server Error: ' + error});
     }
   },
 };
