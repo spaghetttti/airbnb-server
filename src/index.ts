@@ -3,6 +3,7 @@ import userRouter from "./routes/userRoutes";
 import connectToDatabase from "./services/database";
 import bodyParser from "body-parser";
 import propertyRouter from "./routes/propertyRoutes";
+import rentalRouter from "./routes/rentalRoutes";
 
 const app = express();
 const port = 3000;
@@ -23,6 +24,8 @@ app.get("/test-users",  async (req: Request, res: Response) => {
 
 app.use('/api/users', userRouter);
 app.use('/api/properties', propertyRouter);
+app.use('/api/rentals', rentalRouter);
+
 
 
 app.listen(port, () => {
