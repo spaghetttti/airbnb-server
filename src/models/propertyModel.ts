@@ -1,7 +1,7 @@
 import connectToDatabase from "../services/database";
 
 export interface IProperty {
-  id_propertie?: number;
+  id_property?: number;
   email_proprietor: string;
   town: string;
   street: string;
@@ -27,11 +27,14 @@ export const propertyModel = {
 
   getPropertyById: async (propertyId: number): Promise<any> => {
     console.log(propertyId);
-    
+
     try {
       const pool = await connectToDatabase();
       const connection = await pool.getConnection();
-      const [property] = await connection.query("SELECT * FROM Properties WHERE id_propertie = ?", [propertyId]);
+      const [property] = await connection.query(
+        "SELECT * FROM Properties WHERE id_property = ?",
+        [propertyId]
+      );
       connection.release();
       return property as any;
     } catch (error) {
@@ -43,7 +46,10 @@ export const propertyModel = {
     try {
       const pool = await connectToDatabase();
       const connection = await pool.getConnection();
-      const result = await connection.query("INSERT INTO Properties SET ?", property);
+      const result = await connection.query(
+        "INSERT INTO Properties SET ?",
+        property
+      );
       connection.release();
       return result;
     } catch (error) {
@@ -51,11 +57,17 @@ export const propertyModel = {
     }
   },
 
-  updateProperty: async (propertyId: number, propertyData: IProperty): Promise<any> => {
+  updateProperty: async (
+    propertyId: number,
+    propertyData: IProperty
+  ): Promise<any> => {
     try {
       const pool = await connectToDatabase();
       const connection = await pool.getConnection();
-      const result = await connection.query("UPDATE Properties SET ? WHERE id_propertie = ?", [propertyData, propertyId]);
+      const result = await connection.query(
+        "UPDATE Properties SET ? WHERE id_property = ?",
+        [propertyData, propertyId]
+      );
       connection.release();
       return result;
     } catch (error) {
@@ -67,7 +79,10 @@ export const propertyModel = {
     try {
       const pool = await connectToDatabase();
       const connection = await pool.getConnection();
-      const result = await connection.query("DELETE FROM Properties WHERE id_propertie = ?", [propertyId]);
+      const result = await connection.query(
+        "DELETE FROM Properties WHERE id_property = ?",
+        [propertyId]
+      );
       connection.release();
       return result;
     } catch (error) {

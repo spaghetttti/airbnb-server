@@ -34,12 +34,12 @@ export const propertyController = {
       await propertyService.createProperty(newProperty);
       res.status(201).json({ message: 'Property created successfully' });
     } catch (error) {
-      res.status(500).json({ error: 'Internal Server Error' });
+      res.status(500).json({ error: 'Internal Server Error' + error });
     }
   },
 
   updateProperty: async (req: Request, res: Response): Promise<void> => {
-    const propertyId = req.params.id;
+    const propertyId = req.params.id.slice(1);
     const propertyData = req.body;
 
     try {
@@ -51,7 +51,7 @@ export const propertyController = {
   },
 
   deleteProperty: async (req: Request, res: Response): Promise<void> => {
-    const propertyId = req.params.id;
+    const propertyId = req.params.id.slice(1);
     
     try {
       await propertyService.deleteProperty(Number(propertyId));
