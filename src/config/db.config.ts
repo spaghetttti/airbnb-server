@@ -1,6 +1,6 @@
 export const DBconfig = {
   host: "localhost",
   user: "root",
-  password: "azizbekloh",
+  password: "my-secret-pw",
   database: "airbnb",
 }

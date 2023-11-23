@@ -7,7 +7,7 @@ export const userService = {
         try {
           return await userModel.getAllUsers();
         } catch (error) {
-          throw new Error('Error retrieving users');
+          throw new Error('Error retrieving users' + error);
         }
       },
 

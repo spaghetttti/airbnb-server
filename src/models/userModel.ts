@@ -12,11 +12,11 @@ export const userModel = {
     try {
       const pool = await connectToDatabase();
       const connection = await pool.getConnection();
-      const [rows] = await connection.query("SELECT * FROM users");
+      const [rows] = await connection.query("SELECT * FROM Users");
       connection.release();
       return rows as any;
     } catch (error) {
-      throw new Error("Error retrieving users");
+      throw new Error("Error retrieving users" + error);
     }
   },
 
@@ -24,7 +24,7 @@ export const userModel = {
     try {
       const pool = await connectToDatabase();
       const connection = await pool.getConnection();
-      const [user] = await connection.query("SELECT * FROM users WHERE id = ?", [userId]);
+      const [user] = await connection.query("SELECT * FROM Users WHERE id = ?", [userId]);
       connection.release();
       return user as any;
     } catch (error) {
@@ -38,7 +38,7 @@ export const userModel = {
       const connection = await pool.getConnection();
       console.log(user);
 
-      const result = await connection.query("INSERT INTO users SET ?", user);
+      const result = await connection.query("INSERT INTO Users SET ?", user);
       connection.release();
       return result;
     } catch (error) {
@@ -51,7 +51,7 @@ export const userModel = {
       const pool = await connectToDatabase();
       const connection = await pool.getConnection();
       
-      const result = await connection.query("UPDATE users SET ? WHERE id = ?", [userData, userId]);
+      const result = await connection.query("UPDATE Users SET ? WHERE id = ?", [userData, userId]);
       connection.release();
       return result;
     } catch (error) {
@@ -63,7 +63,7 @@ export const userModel = {
     try {
       const pool = await connectToDatabase();
       const connection = await pool.getConnection();
-      const result = await connection.query("DELETE FROM users WHERE id = ?", [userId]);
+      const result = await connection.query("DELETE FROM Users WHERE id = ?", [userId]);
       connection.release();
       return result;
     } catch (error) {
