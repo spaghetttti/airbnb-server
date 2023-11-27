@@ -3,9 +3,22 @@ import { Request, Response } from 'express';
 
 export const propertyController = {
   getAllProperties: async (req: Request, res: Response): Promise<void> => {
+    const searchData = req.body;
+    console.log(searchData);
+    
     try {
-      const properties = await propertyService.getAllProperties();
-      res.status(200).json(properties);
+      if (Object.keys(searchData).length > 0) {
+        console.log('check');
+        
+        const properties = await propertyService.getSearchedProperties(searchData);
+        res.status(200).json(properties);
+
+      } else {
+        console.log('uncheck');
+
+        const properties = await propertyService.getAllProperties();
+        res.status(200).json(properties);
+      }
     } catch (error) {
       res.status(500).json({ error: 'Internal Server Error' });
     }

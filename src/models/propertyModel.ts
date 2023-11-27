@@ -25,6 +25,19 @@ export const propertyModel = {
     }
   },
 
+
+  getSearchedProperties: async (searchData: any): Promise<any> => { 
+    try {
+      const pool = await connectToDatabase();
+      const connection = await pool.getConnection();
+      const [rows] = await connection.query("SELECT * FROM Properties WHERE ?", [searchData]);
+      connection.release();
+      return rows as any[];
+    } catch (error) {
+      throw new Error("Error retrieving properties");
+    }
+  } ,
+
   getPropertyById: async (propertyId: number): Promise<any> => {
     console.log(propertyId);
 

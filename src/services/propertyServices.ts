@@ -6,10 +6,16 @@ export const propertyService = {
     try {
       return await propertyModel.getAllProperties();
     } catch (error) {
-      throw new Error('Error retrieving properties');
+      throw new Error("Error retrieving properties");
     }
   },
-
+  getSearchedProperties: async (searchData: any) => { //define an interface
+    try {
+      return await propertyModel.getSearchedProperties(searchData);
+    } catch (error) {
+      throw new Error("Error retrieving properties");
+    }
+  },
   getPropertyById: (propertyId: number) => {
     return propertyModel.getPropertyById(propertyId);
   },
@@ -25,8 +31,8 @@ export const propertyService = {
   deleteProperty: async (propertyId: number): Promise<any[]> => {
     try {
       return await propertyModel.deleteProperty(propertyId);
-    } catch(error) {
-      throw new Error('Error deleting property');
+    } catch (error) {
+      throw new Error("Error deleting property");
     }
   },
 };
