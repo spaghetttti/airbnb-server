@@ -3,11 +3,17 @@ import { DBconfig } from "../config/db.config";
 
 async function connectToDatabase() {
   try {
+  //   const pool = mysql.createPool({
+  //     host: DBconfig.MYSQL_ADDON_HOST,
+  //     user: DBconfig.MYSQL_ADDON_USER,
+  //     password: DBconfig.MYSQL_ADDON_PASSWORD,
+  //     database: DBconfig.MYSQL_ADDON_DB
+  //   });
     const pool = mysql.createPool({
-      host: DBconfig.MYSQL_ADDON_HOST,
-      user: DBconfig.MYSQL_ADDON_USER,
-      password: DBconfig.MYSQL_ADDON_PASSWORD,
-      database: DBconfig.MYSQL_ADDON_DB
+      host: "localhost",
+      user: "root",
+      password: "azizbekloh",
+      database: "airbnb"
     });
     const connection = await pool.getConnection();
     console.log('Connected to MySQL database!');

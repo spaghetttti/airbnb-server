@@ -4,8 +4,11 @@ import connectToDatabase from "./services/database";
 import bodyParser from "body-parser";
 import propertyRouter from "./routes/propertyRoutes";
 import rentalRouter from "./routes/rentalRoutes";
+const cors = require('cors');
 
-import { DBconfig } from "./config/db.config";
+
+// Enable CORS for all routes
+
 
 const app = express();
 const port = 3000;
@@ -13,6 +16,8 @@ const port = 3000;
 app.get("/", (req: Request, res: Response) => {
   res.send("Hello, World!");
 });
+
+app.use(cors());
 
 app.use(bodyParser.json())
 
