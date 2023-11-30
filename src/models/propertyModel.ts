@@ -24,19 +24,67 @@ export const propertyModel = {
       throw new Error("Error retrieving properties");
     }
   },
+ 
+  getSearchedProperties: async (searchData: any): Promise<any[]>  => { // include interface later
+    const {
+      numberOfRooms,
+      numberOfBeds,
+      desiredTown,
+      desiredPrice,
+      desiredStartDate,
+      desiredEndDate,
+      // ... other search criteria from propertySearchData
+    } = searchData;
 
-
-  getSearchedProperties: async (searchData: any): Promise<any> => { 
     try {
+      // Construct the SQL query
+      const query = `
+        SELECT *
+        FROM properties p
+        JOIN rooms r ON p.property_id = r.property_id
+        WHERE p.town = ?
+          AND r.number_of_rooms >= ?
+          AND r.number_of_beds >= ?
+          AND p.price <= ?
+          AND p.property_id NOT IN (
+            SELECT property_id
+            FROM rentals
+            WHERE (date_start BETWEEN ? AND ?)
+              OR (date_end BETWEEN ? AND ?)
+          )
+      `;
       const pool = await connectToDatabase();
       const connection = await pool.getConnection();
-      const [rows] = await connection.query("SELECT * FROM Properties WHERE ?", [searchData]);
-      connection.release();
+      
+      // Execute the query with parameters
+      const [rows] = await connection.query(query, [
+        desiredTown,
+        numberOfRooms,
+        numberOfBeds,
+        desiredPrice,
+        desiredStartDate,
+        desiredEndDate,
+        desiredStartDate,
+        desiredEndDate,
+      ]);
+
       return rows as any[];
     } catch (error) {
-      throw new Error("Error retrieving properties");
+      throw new Error('Error searching for properties');
     }
-  } ,
+  },
+
+  // getSearchedProperties: async (searchData: any): Promise<any> => { 
+  //   try {
+  //     const pool = await connectToDatabase();
+  //     const connection = await pool.getConnection();
+  //     const [rows] = await connection.query("SELECT * FROM Properties WHERE ?", [searchData]);
+  //     connection.release();
+  //     return rows as any[];
+  //   } catch (error) {
+  //     throw new Error("Error retrieving properties");
+  //   }
+  // } ,
 
   getPropertyById: async (propertyId: number): Promise<any> => {
     console.log(propertyId);
