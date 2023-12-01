@@ -10,6 +10,7 @@ export interface IProperty {
   rooms_number: number;
   distance: number;
   price: number;
+  image_url: string,
 }
 
 export const propertyModel = {
@@ -114,7 +115,7 @@ export const propertyModel = {
       connection.release();
       return result;
     } catch (error) {
-      throw new Error("Error creating property");
+      throw new Error("Error creating property" + error);
     }
   },
 
