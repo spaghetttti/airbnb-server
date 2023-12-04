@@ -1,5 +1,5 @@
 import { rentalService } from "../services/rentalServices";
-import { Request, Response } from 'express';
+import { Request, Response } from "express";
 
 export const rentalController = {
   getAllRentals: async (req: Request, res: Response): Promise<void> => {
@@ -7,34 +7,54 @@ export const rentalController = {
       const rentals = await rentalService.getAllRentals();
       res.status(200).json(rentals);
     } catch (error) {
-      res.status(500).json({ error: 'Internal Server Error' });
+      res.status(500).json({ error: "Internal Server Error" });
     }
   },
 
-  getRentalById: async (req: Request, res: Response): Promise<void> => {
+  getRentalByLocationId: async (req: Request, res: Response): Promise<void> => {
     const rentalId = req.params.id.slice(1);
 
     try {
-      const rental = await rentalService.getRentalById(Number(rentalId));
-      if (!rental[0]) {
-        res.status(404).json({ error: 'Rental not found' });
+      const rentals = await rentalService.getRentalByLocationId(
+        Number(rentalId)
+      );
+      if (!rentals[0]) {
+        res.status(404).json({ error: "Rental not found" });
         return;
       }
 
-      res.status(200).json(rental[0]);
+      res.status(200).json(rentals);
     } catch (error) {
-      res.status(500).json({ error: 'Internal Server Error' });
+      res.status(500).json({ error: "Internal Server Error" + error });
+    }
+  },
+
+  getRentalByPropertyId: async (req: Request, res: Response): Promise<void> => {
+    const rentalId = req.params.id.slice(1);
+
+    try {
+      const rentals = await rentalService.getRentalByPropertyId(
+        Number(rentalId)
+      );
+      if (!rentals[0]) {
+        res.status(404).json({ error: "Rental not found" });
+        return;
+      }
+
+      res.status(200).json(rentals);
+    } catch (error) {
+      res.status(500).json({ error: "Internal Server Error" + error });
     }
   },
 
   createRental: async (req: Request, res: Response): Promise<void> => {
-    const newRental = req.body;
+    const rentalData = req.body;
     
     try {
-      await rentalService.createRental(newRental);
-      res.status(201).json({ message: 'Rental created successfully' });
+      await rentalService.createRental(rentalData, rentalData.id_property);
+      res.status(201).json({ message: "Rental created successfully" });
     } catch (error) {
-      res.status(500).json({ error: 'Internal Server Error' + error});
+      res.status(500).json({ error: "Internal Server Error" + error });
     }
   },
 
@@ -44,20 +64,20 @@ export const rentalController = {
 
     try {
       await rentalService.updateRental(Number(rentalId), rentalData);
-      res.status(200).json({ message: 'Rental updated successfully' });
+      res.status(200).json({ message: "Rental updated successfully" });
     } catch (error) {
-      res.status(500).json({ error: 'Internal Server Error' });
+      res.status(500).json({ error: "Internal Server Error" });
     }
   },
 
   deleteRental: async (req: Request, res: Response): Promise<void> => {
     const rentalId = req.params.id.slice(1);
-    
+
     try {
       await rentalService.deleteRental(Number(rentalId));
-      res.status(200).json({ message: 'Rental deleted successfully' });
+      res.status(200).json({ message: "Rental deleted successfully" });
     } catch (error) {
-      res.status(500).json({ error: 'Internal Server Error' });
+      res.status(500).json({ error: "Internal Server Error" });
     }
   },
 };

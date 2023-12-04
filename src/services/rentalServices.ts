@@ -9,17 +9,25 @@ export const rentalService = {
     }
   },
 
-  getRentalById: async (rentalId: number): Promise<any> => {
+  getRentalByLocationId: async (rentalId: number): Promise<any> => {
     try {
-      return await rentalModel.getRentalById(rentalId);
+      return await rentalModel.getRentalByLocationId(rentalId);
     } catch (error) {
       throw new Error('Error retrieving rental by ID');
     }
   },
 
-  createRental: async (rental: IRental): Promise<any> => {
+  getRentalByPropertyId: async (propertyId: number): Promise<any> => {
     try {
-      return await rentalModel.createRental(rental);
+      return await rentalModel.getRentalByPropertyId(propertyId);
+    } catch (error) {
+      throw new Error('Error retrieving rental by ID');
+    }
+  },
+
+  createRental: async (rental: IRental, propertyId: number): Promise<any> => {
+    try {
+      return await rentalModel.createRental(rental, propertyId);
     } catch (error) {
       throw new Error('Error creating rental' + error);
     }

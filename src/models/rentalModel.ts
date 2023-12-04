@@ -22,29 +22,72 @@ export const rentalModel = {
     }
   },
 
-  getRentalById: async (rentalId: number): Promise<any> => {
+  getRentalByLocationId: async (rentalId: number): Promise<any> => {
     try {
       const pool = await connectToDatabase();
       const connection = await pool.getConnection();
-      const [rental] = await connection.query("SELECT * FROM Rentals WHERE id_location = ?", [rentalId]);
+      const [rows] = await connection.query("SELECT * FROM Rentals WHERE id_location = ?", [rentalId]);
       connection.release();
-      return rental as any;
+      return rows as any[];
     } catch (error) {
-      throw new Error("Error retrieving rental by ID");
+      throw new Error("Error retrieving rental by location ID");
     }
   },
 
-  createRental: async (rental: IRental): Promise<any> => {
+  getRentalByPropertyId: async (propertyId: number): Promise<any> => {
     try {
       const pool = await connectToDatabase();
       const connection = await pool.getConnection();
+      const [rows] = await connection.query("SELECT * FROM Rentals WHERE id_property = ?", [propertyId]);
+      console.log(rows);
+      
+      connection.release();
+      return rows as any[];
+    } catch (error) {
+      throw new Error("Error retrieving rental by property ID");
+    }
+  },
+
+  createRental: async (rental: IRental, propertyId: number): Promise<any> => {
+    try {
+      const pool = await connectToDatabase();
+      const connection = await pool.getConnection();
+      
+      // Check for overlapping rentals
+      const overlapQuery = `
+        SELECT *
+        FROM Rentals
+        WHERE id_property = ? AND (
+          (date_start <= ? AND date_end >= ?)
+          OR (date_start <= ? AND date_end >= ?)
+          OR (date_start >= ? AND date_end <= ?)
+        )`;
+  
+      const [overlappingRentals] = await connection.query(overlapQuery, [
+        propertyId,
+        rental.date_start,
+        rental.date_end,
+        rental.date_start,
+        rental.date_end,
+        rental.date_start,
+        rental.date_end,
+      ]);
+  
+      if ((overlappingRentals as any[]).length > 0) {
+        // Handle overlapping rentals
+        // You might throw an error or handle it based on your app's logic
+        throw new Error("There is an overlapping rental for this property.");
+      }
+  
+      // Proceed with inserting the rental if there's no overlap
       const result = await connection.query("INSERT INTO Rentals SET ?", rental);
       connection.release();
       return result;
     } catch (error) {
-      throw new Error("Error creating rental" + error);
+      throw new Error("Error creating rental: " + error);
     }
   },
+  
 
   updateRental: async (rentalId: number, rentalData: IRental): Promise<any> => {
     try {
