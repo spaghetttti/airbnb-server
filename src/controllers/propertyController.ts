@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 
 export const propertyController = {
   getAllProperties: async (req: Request, res: Response): Promise<void> => {
-    const searchData = req.body;
+    const searchData = req.query;
     console.log(searchData);
     
     try {
@@ -20,7 +20,7 @@ export const propertyController = {
         res.status(200).json(properties);
       }
     } catch (error) {
-      res.status(500).json({ error: 'Internal Server Error' });
+      res.status(500).json({ error: 'Internal Server Error' + error});
     }
   },
 

@@ -10,7 +10,7 @@ export interface IProperty {
   rooms_number: number;
   distance: number;
   price: number;
-  image_url: string,
+  image_url: string;
 }
 
 export const propertyModel = {
@@ -25,57 +25,68 @@ export const propertyModel = {
       throw new Error("Error retrieving properties");
     }
   },
- 
-  getSearchedProperties: async (searchData: any): Promise<any[]>  => { // include interface later
-    const {
-      numberOfRooms,
-      numberOfBeds,
-      desiredTown,
-      desiredPrice,
-      desiredStartDate,
-      desiredEndDate,
-      // ... other search criteria from propertySearchData
-    } = searchData;
 
+  getSearchedProperties: async (searchData: any): Promise<any[]> => { 
+    // Destructure searchData and provide default values
+    const {
+      rooms_number,
+      beds_number,
+      town,
+      price,
+      date_start,
+      date_end,
+    } = searchData;
+  
     try {
-      // Construct the SQL query
-      const query = `
-        SELECT *
-        FROM properties p
-        JOIN rooms r ON p.property_id = r.property_id
-        WHERE p.town = ?
-          AND r.number_of_rooms >= ?
-          AND r.number_of_beds >= ?
-          AND p.price <= ?
-          AND p.property_id NOT IN (
-            SELECT property_id
-            FROM rentals
-            WHERE (date_start BETWEEN ? AND ?)
-              OR (date_end BETWEEN ? AND ?)
-          )
-      `;
       const pool = await connectToDatabase();
       const connection = await pool.getConnection();
-      
+  
+      //! maybe refactor this alter
+      let query = `
+        SELECT *
+        FROM Properties p
+        WHERE 1 = 1`; // Default condition to start the WHERE clause
+      const queryParams: string[] = [];
+  
+      // Build the query conditionally based on available search parameters
+      if (town) {
+        query += ` AND p.town = ?`;
+        queryParams.push(town);
+      }
+      if (rooms_number) {
+        query += ` AND p.rooms_number >= ?`;
+        queryParams.push(rooms_number);
+      }
+      if (beds_number) {
+        query += ` AND p.beds_number >= ?`;
+        queryParams.push(beds_number);
+      }
+      if (price) {
+        query += ` AND p.price <= ?`;
+        queryParams.push(price);
+      }
+      if (date_start && date_end) {
+        query += `
+          AND p.id_property NOT IN (
+            SELECT r.id_property
+            FROM Rentals r
+            WHERE (r.date_start BETWEEN ? AND ?)
+              OR (r.date_end BETWEEN ? AND ?)
+          )`;
+        queryParams.push(date_start, date_end, date_start, date_end);
+      }
+  
       // Execute the query with parameters
-      const [rows] = await connection.query(query, [
-        desiredTown,
-        numberOfRooms,
-        numberOfBeds,
-        desiredPrice,
-        desiredStartDate,
-        desiredEndDate,
-        desiredStartDate,
-        desiredEndDate,
-      ]);
-
+      const [rows] = await connection.query(query, queryParams);
+  
       return rows as any[];
     } catch (error) {
-      throw new Error('Error searching for properties');
+      throw new Error("Error searching for properties" + error);
     }
   },
+  
 
-  // getSearchedProperties: async (searchData: any): Promise<any> => { 
+  // getSearchedProperties: async (searchData: any): Promise<any> => {
   //   try {
   //     const pool = await connectToDatabase();
   //     const connection = await pool.getConnection();

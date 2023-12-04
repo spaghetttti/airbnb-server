@@ -6,14 +6,14 @@ export const propertyService = {
     try {
       return await propertyModel.getAllProperties();
     } catch (error) {
-      throw new Error("Error retrieving properties");
+      throw new Error("Error retrieving properties" + error);
     }
   },
   getSearchedProperties: async (searchData: any) => { //define an interface
     try {
       return await propertyModel.getSearchedProperties(searchData);
     } catch (error) {
-      throw new Error("Error retrieving properties");
+      throw new Error("Error retrieving properties" + error);
     }
   },
   getPropertyById: (propertyId: number) => {
