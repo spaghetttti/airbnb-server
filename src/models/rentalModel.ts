@@ -93,13 +93,50 @@ export const rentalModel = {
     try {
       const pool = await connectToDatabase();
       const connection = await pool.getConnection();
+  
+      // Retrieve property ID for the rental being updated
+      const [propertyIdRow]: any[] = await connection.query("SELECT id_property FROM Rentals WHERE id_location = ?", rentalId);
+      const propertyId = propertyIdRow[0]?.id_property;
+  
+      if (!propertyId) {
+        throw new Error("Property ID not found for the rental");
+      }
+  
+      // Check for overlapping rentals
+      const overlapQuery = `
+        SELECT *
+        FROM Rentals
+        WHERE id_property = ? AND id_location <> ? AND (
+          (date_start <= ? AND date_end >= ?)
+          OR (date_start <= ? AND date_end >= ?)
+          OR (date_start >= ? AND date_end <= ?)
+        )`;
+  
+      const [overlappingRentals] = await connection.query(overlapQuery, [
+        propertyId,
+        rentalId,
+        rentalData.date_start,
+        rentalData.date_end,
+        rentalData.date_start,
+        rentalData.date_end,
+        rentalData.date_start,
+        rentalData.date_end,
+      ]);
+  
+      if ((overlappingRentals as any[]).length > 0) {
+        // Handle overlapping rentals
+        throw new Error("There is an overlapping rental for this property.");
+      }
+  
+      // Proceed with updating the rental if there's no overlap
       const result = await connection.query("UPDATE Rentals SET ? WHERE id_location = ?", [rentalData, rentalId]);
       connection.release();
       return result;
     } catch (error) {
-      throw new Error("Error updating rental");
+      throw new Error("Error updating rental: " + error);
     }
   },
+  
 
   deleteRental: async (rentalId: number): Promise<any> => {
     try {
