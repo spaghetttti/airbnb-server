@@ -5,6 +5,7 @@ export interface IUser {
   email: string;
   last_name: string;
   phone_number: string;
+  password: string;
 }
 
 export const userModel = {
@@ -24,11 +25,29 @@ export const userModel = {
     try {
       const pool = await connectToDatabase();
       const connection = await pool.getConnection();
-      const [user] = await connection.query("SELECT * FROM Users WHERE id = ?", [userId]);
+      const [user] = await connection.query(
+        "SELECT * FROM Users WHERE id = ?",
+        [userId]
+      );
       connection.release();
       return user as any;
     } catch (error) {
       throw new Error("Error retrieving user by ID");
+    }
+  },
+
+  getUserByEmail: async (userEmail: string): Promise<any> => {
+    try {
+      const pool = await connectToDatabase();
+      const connection = await pool.getConnection();
+      const [user] = await connection.query(
+        "SELECT * FROM Users WHERE email = ?",
+        [userEmail]
+      );
+      connection.release();
+      return user as any;
+    } catch (error) {
+      throw new Error("Error retrieving user by email" + error);
     }
   },
 
@@ -37,12 +56,12 @@ export const userModel = {
       const pool = await connectToDatabase();
       const connection = await pool.getConnection();
       console.log(user);
-
+      // ! add verification if email is already taken!!!
       const result = await connection.query("INSERT INTO Users SET ?", user);
       connection.release();
       return result;
     } catch (error) {
-      throw new Error("Error creating user");
+      throw new Error("Error creating user" + error);
     }
   },
 
@@ -50,8 +69,11 @@ export const userModel = {
     try {
       const pool = await connectToDatabase();
       const connection = await pool.getConnection();
-      
-      const result = await connection.query("UPDATE Users SET ? WHERE id = ?", [userData, userId]);
+
+      const result = await connection.query("UPDATE Users SET ? WHERE id = ?", [
+        userData,
+        userId,
+      ]);
       connection.release();
       return result;
     } catch (error) {
@@ -63,7 +85,9 @@ export const userModel = {
     try {
       const pool = await connectToDatabase();
       const connection = await pool.getConnection();
-      const result = await connection.query("DELETE FROM Users WHERE id = ?", [userId]);
+      const result = await connection.query("DELETE FROM Users WHERE id = ?", [
+        userId,
+      ]);
       connection.release();
       return result;
     } catch (error) {

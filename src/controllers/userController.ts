@@ -12,6 +12,30 @@ export const userController = {
     }
   },
 
+  registerUser:  async (req: Request, res: Response): Promise<void> => {
+    const newUser = req.body;
+    console.log('register', req.params, req.body);
+    
+    try {
+      const response = await userService.registerUser(newUser);
+      res.status(201).json({ message: 'User registered successfully ' + response });
+    } catch (error) {
+      res.status(500).json({ error: 'Internal Server Error' + error});
+    }
+  },
+
+  loginUser: async (req: Request, res: Response): Promise<void> => {
+    const {email, password} = req.body;
+    console.log('login', req.params, req.body);
+    
+    try {
+      const response = await userService.loginUser(email, password);
+      res.status(201).json({ message: 'User registered successfully ' + response });
+    } catch (error) {
+      res.status(500).json({ error: 'Internal Server Error' + error });
+    }
+  },
+  
   getUserById: async (req: Request, res: Response): Promise<void> => {
     const userId: string = req.params.id.slice(1);
 
