@@ -1,6 +1,5 @@
 import express from 'express';
 import {propertyController} from '../controllers/propertyController';
-
 const propertyRouter = express.Router();
 
 // Define property routes

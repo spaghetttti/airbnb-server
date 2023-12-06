@@ -1,9 +1,11 @@
 // src/services/userService.js
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 import { IUser } from "../models/userModel";
 import { userModel } from "../models/userModel";
+
 export const userService = {
   registerUser: async (userData: IUser) => {
     const { password } = userData;
@@ -25,18 +27,18 @@ export const userService = {
       if (password !== user.password && !passwordMatch) {
         throw new Error("Incorrect password" + passwordMatch);
       }
-      return "user is chill " + passwordMatch + user.email + user.password;
+      const token = jwt.sign(
+        { email, password },
+        process.env.ACCESS_TOKEN_SECRECT,
+        {
+          expiresIn: "15",
+        }
+      );
+      return { email, token };
+      // return "user is chill " + passwordMatch + user.email + user.password;
     } catch (error) {
       throw new Error("shit happened somewhere here" + error);
     }
-    //
-    // // Generate JWT
-
-    // const token = jwt.sign({ email: user.email }, "yourSecretKey", {
-    //   expiresIn: "1h",
-    // });
-
-    // return token;
   },
 
   verifyToken: (token: any) => {
