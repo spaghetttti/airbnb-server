@@ -30,7 +30,7 @@ export const userController = {
     
     try {
       const response = await userService.loginUser(email, password);
-      res.status(201).json({ message: 'User registered successfully ' + response });
+      res.status(201).json({ message: 'User loged in successfully ' + response });
     } catch (error) {
       res.status(500).json({ error: 'Internal Server Error' + error });
     }

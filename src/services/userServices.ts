@@ -4,13 +4,12 @@ const jwt = require("jsonwebtoken");
 
 import { IUser } from "../models/userModel";
 import { userModel } from "../models/userModel";
-const saltRounds = 10;
 export const userService = {
   registerUser: async (userData: IUser) => {
     const { password } = userData;
+    const hashedPassword: string = await bcrypt.hash(password, 10);
+    userData.password = hashedPassword;
 
-    // const hashedPassword: string = await bcrypt.hash(password, saltRounds);
-    // userData.password = hashedPassword;
     return userModel.createUser(userData);
   },
 
@@ -21,22 +20,12 @@ export const userService = {
       if (!user) {
         throw new Error("User not found");
       }
-      console.log(password, user);
+      const passwordMatch = await bcrypt.compare(password, user.password);
 
-      // const passwordMatch = await bcrypt.compare(password, user.password);
-
-      // if (!passwordMatch) {
-      //   throw new Error("Incorrect password bcrypt");
-      // }
-      console.log("passwords", password, user.password);
-      
-      if (password !== user.password) {
-        throw new Error("Incorrect password");
+      if (password !== user.password && !passwordMatch) {
+        throw new Error("Incorrect password" + passwordMatch);
       }
-      console.log(
-        "user is chill " + user.email + user.password
-      );
-      return "user is chill " +user.email + user.password;
+      return "user is chill " + passwordMatch + user.email + user.password;
     } catch (error) {
       throw new Error("shit happened somewhere here" + error);
     }
