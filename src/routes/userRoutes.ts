@@ -1,7 +1,6 @@
 // src/routes/userRoutes.js
 const express = require('express');
-import { userController } from "../controllers/userController";
-import { authenticateToken } from "../controllers/userController";
+import { authenticateToken, userController } from "../controllers/userController";
 const userRouter = express.Router();
 
 // Define user routes

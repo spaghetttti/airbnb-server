@@ -6,9 +6,7 @@ import propertyRouter from "./routes/propertyRoutes";
 import rentalRouter from "./routes/rentalRoutes";
 const cors = require('cors');
 
-
 // Enable CORS for all routes
-
 
 const app = express();
 const port = 3000;
@@ -22,19 +20,17 @@ app.use(express.json())
 
 app.use(bodyParser.json())
 
-app.get("/test-users",  async (req: Request, res: Response) => {
-  const pool : any = await connectToDatabase();
-  const connection = await pool.getConnection();
-  const [rows]:any = await connection.query("SELECT * FROM users");
-  res.send(rows);
-  connection.release();
-});
+// app.get("/test-users",  async (req: Request, res: Response) => {
+//   const pool : any = await connectToDatabase();
+//   const connection = await pool.getConnection();
+//   const [rows]:any = await connection.query("SELECT * FROM users");
+//   res.send(rows);
+//   connection.release();
+// });
 
 app.use('/api/users', userRouter);
 app.use('/api/properties', propertyRouter);
 app.use('/api/rentals', rentalRouter);
-
-
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);

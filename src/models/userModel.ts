@@ -55,8 +55,6 @@ export const userModel = {
     try {
       const pool = await connectToDatabase();
       const connection = await pool.getConnection();
-      console.log(user);
-      // ! add verification if email is already taken!!!
       const result = await connection.query("INSERT INTO Users SET ?", user);
       connection.release();
       return result;

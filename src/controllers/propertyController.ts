@@ -8,7 +8,6 @@ export const propertyController = {
     
     try {
       if (Object.keys(searchData).length > 0) {
-        console.log('check');
         
         const properties = await propertyService.getSearchedProperties(searchData);
         res.status(200).json(properties);
@@ -42,6 +41,7 @@ export const propertyController = {
 
   createProperty: async (req: Request, res: Response): Promise<void> => {
     const newProperty = req.body;
+    console.log(newProperty);
     
     try {
       await propertyService.createProperty(newProperty);

@@ -41,10 +41,10 @@ export const userService = {
     }
   },
 
-  verifyToken: (token: any) => {
-    // gogole token type later
-    return jwt.verify(token, "yourSecretKey");
-  },
+  // verifyToken: (token: any) => {
+  //   // gogole token type later
+  //   return jwt.verify(token, "yourSecretKey");
+  // },
 
   getAllUsers: async (): Promise<any[]> => {
     try {
