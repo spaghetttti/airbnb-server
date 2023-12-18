@@ -7,7 +7,7 @@ export const rentalController = {
       const rentals = await rentalService.getAllRentals();
       res.status(200).json(rentals);
     } catch (error) {
-      res.status(500).json({ error: "Internal Server Error" });
+      res.status(500).json({ error: "Internal Server Error " + error });
     }
   },
 
@@ -61,12 +61,13 @@ export const rentalController = {
   updateRental: async (req: Request, res: Response): Promise<void> => {
     const rentalId = req.params.id.slice(1);
     const rentalData = req.body;
-
+    console.log(rentalData);
+    
     try {
       await rentalService.updateRental(Number(rentalId), rentalData);
       res.status(200).json({ message: "Rental updated successfully" });
     } catch (error) {
-      res.status(500).json({ error: "Internal Server Error" });
+      res.status(500).json({ error: "Internal Server Error " + error });
     }
   },
 

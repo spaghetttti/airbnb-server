@@ -1,4 +1,3 @@
-// src/services/userService.js
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
@@ -35,16 +34,10 @@ export const userService = {
         }
       );
       return { email, token };
-      // return "user is chill " + passwordMatch + user.email + user.password;
     } catch (error) {
       throw new Error("shit happened somewhere here" + error);
     }
   },
-
-  // verifyToken: (token: any) => {
-  //   // gogole token type later
-  //   return jwt.verify(token, "yourSecretKey");
-  // },
 
   getAllUsers: async (): Promise<any[]> => {
     try {

@@ -1,4 +1,4 @@
-import { IProperty } from "../models/propertyModel";
+import { IProperty, ISearchData } from "../models/propertyModel";
 import { propertyModel } from "../models/propertyModel";
 
 export const propertyService = {
@@ -9,7 +9,7 @@ export const propertyService = {
       throw new Error("Error retrieving properties" + error);
     }
   },
-  getSearchedProperties: async (searchData: any) => { //define an interface
+  getSearchedProperties: async (searchData: ISearchData) => { //define an interface
     try {
       return await propertyModel.getSearchedProperties(searchData);
     } catch (error) {

@@ -97,7 +97,8 @@ export const rentalModel = {
       // Retrieve property ID for the rental being updated
       const [propertyIdRow]: any[] = await connection.query("SELECT id_property FROM Rentals WHERE id_location = ?", rentalId);
       const propertyId = propertyIdRow[0]?.id_property;
-  
+      console.log('modelview', rentalData);
+      
       if (!propertyId) {
         throw new Error("Property ID not found for the rental");
       }
