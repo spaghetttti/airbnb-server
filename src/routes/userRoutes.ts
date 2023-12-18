@@ -4,12 +4,12 @@ import { authenticateToken, userController } from "../controllers/userController
 const userRouter = express.Router();
 
 // Define user routes
-userRouter.get('',authenticateToken, userController.getAllUsers);
-userRouter.get('/:id',authenticateToken, userController.getUserById);
-userRouter.post('',authenticateToken, userController.createUser);
+userRouter.get('', userController.getAllUsers);
+userRouter.get('/:id', userController.getUserById);
+userRouter.post('', userController.createUser);
 userRouter.post('/register', userController.registerUser);
 userRouter.post('/login', userController.loginUser);
-userRouter.put('/:id',authenticateToken, userController.updateUser);
-userRouter.delete('/:id',authenticateToken, userController.deleteUser);
+userRouter.put('/:id', userController.updateUser);
+userRouter.delete('/:id', userController.deleteUser);
 
 export default userRouter;
