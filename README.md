@@ -14,9 +14,9 @@ Ce backend comprend un serveur Express.js servant de backend à l'application. I
 La base de code backend est organisée en plusieurs fichiers :
 
 1. **index.ts** : Point d'entrée pour la configuration du serveur Express, définition des routes et du middleware.
-2. **Itinéraires** :
-
-- **userRoutes.ts** : définit les itinéraires pour les opérations liées à l'utilisateur. - **propertyRoutes.ts** : définit les itinéraires pour les opérations liées à la
+2. **Routeurs** :
+- **userRoutes.ts** : définit les itinéraires pour les opérations liées à l'utilisateur.
+- **propertyRoutes.ts** : définit les itinéraires pour les opérations liées à la
   propriété.
 - **rentalRoutes.ts** : Définit les itinéraires pour les opérations liées à la location.
 
@@ -55,7 +55,8 @@ La base de code backend est organisée en plusieurs fichiers :
 - **GET /api/users/:id** : Récupère l'utilisateur par ID.
 - **POST /api/users** : Créez un nouvel utilisateur.
 - **POST /api/users/register** : Enregistrez un nouvel utilisateur.
-- **POST /api/users/login** : Authentifier et connecter un utilisateur. - **PUT /api/users/:id** : Mettre à jour les informations utilisateur.
+- **POST /api/users/login** : Authentifier et connecter un utilisateur.
+- **PUT /api/users/:id** : Mettre à jour les informations utilisateur.
 - **DELETE /api/users/:id** : Supprimer un utilisateur.
 
 2. **Opérations immobilières** :
@@ -64,12 +65,14 @@ La base de code backend est organisée en plusieurs fichiers :
   en fonction des critères de recherche.
 - **GET /api/properties/:id** : Récupère la propriété par ID.
 - **POST /api/properties** : Créez une nouvelle propriété.
-- **PUT /api/properties/:id** : Mettre à jour les informations sur la propriété. - **DELETE /api/properties/:id** : Supprimer une propriété.
+- **PUT /api/properties/:id** : Mettre à jour les informations sur la propriété.
+- **DELETE /api/properties/:id** : Supprimer une propriété.
  
 3. **Opérations de location** :
 
 - **GET /api/rentals** : Récupère toutes les locations.
-- **GET /api/rentals/location/:id** : Récupérez les locations par ID d'emplacement. - **GET /api/rentals/property/:id** : Récupérez les locations par ID de propriété.
+- **GET /api/rentals/location/:id** : Récupérez les locations par ID d'emplacement.
+- **GET /api/rentals/property/:id** : Récupérez les locations par ID de propriété.
 - **POST /api/rentals** : Créer une nouvelle location.
 - **PUT /api/rentals/:id** : Mettre à jour les informations de location.
 - **DELETE /api/rentals/:id** : Supprimer une location.
