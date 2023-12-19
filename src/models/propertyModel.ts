@@ -37,7 +37,7 @@ export const propertyModel = {
   },
 
   getSearchedProperties: async (searchData: ISearchData): Promise<any[]> => {
-    const { rooms_number, beds_number, town, price, date_start, date_end } =
+    const { rooms_number, beds_number, town, price, date_start, date_end, distance } =
       searchData;
 
     try {
@@ -67,6 +67,12 @@ export const propertyModel = {
         query += ` AND p.price <= ?`;
         queryParams.push(price);
       }
+
+      if (distance) {
+        query += ` AND p.distance <= ?`;
+        queryParams.push(distance);
+      }
+
       if (date_start && date_end) {
         query += `
           AND p.id_property NOT IN (

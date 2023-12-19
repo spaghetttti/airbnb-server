@@ -13,8 +13,6 @@ export const propertyController = {
         res.status(200).json(properties);
 
       } else {
-        console.log('uncheck');
-
         const properties = await propertyService.getAllProperties();
         res.status(200).json(properties);
       }
