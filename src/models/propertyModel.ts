@@ -26,8 +26,8 @@ export interface ISearchData {
 export const propertyModel = {
   getAllProperties: async (): Promise<any[]> => {
     try {
-      const pool = await connectToDatabase();
-      const connection = await pool.getConnection();
+      const connection = await connectToDatabase();
+      // const connection = await pool.getConnection();
       const [rows] = await connection.query("SELECT * FROM Properties");
       connection.release();
       return rows as any[];
@@ -41,8 +41,8 @@ export const propertyModel = {
       searchData;
 
     try {
-      const pool = await connectToDatabase();
-      const connection = await pool.getConnection();
+      const connection = await connectToDatabase();
+      // const connection = await pool.getConnection();
 
       let query = `
         SELECT *
@@ -91,8 +91,8 @@ export const propertyModel = {
     console.log(propertyId);
 
     try {
-      const pool = await connectToDatabase();
-      const connection = await pool.getConnection();
+      const connection = await connectToDatabase();
+      // const connection = await pool.getConnection();
       const [property] = await connection.query(
         "SELECT * FROM Properties WHERE id_property = ?",
         [propertyId]
@@ -106,8 +106,8 @@ export const propertyModel = {
 
   createProperty: async (property: IProperty): Promise<any> => {
     try {
-      const pool = await connectToDatabase();
-      const connection = await pool.getConnection();
+      const connection = await connectToDatabase();
+      // const connection = await pool.getConnection();
       const result = await connection.query(
         "INSERT INTO Properties SET ?",
         property
@@ -124,8 +124,8 @@ export const propertyModel = {
     propertyData: IProperty
   ): Promise<any> => {
     try {
-      const pool = await connectToDatabase();
-      const connection = await pool.getConnection();
+      const connection = await connectToDatabase();
+      // const connection = await pool.getConnection();
       const result = await connection.query(
         "UPDATE Properties SET ? WHERE id_property = ?",
         [propertyData, propertyId]
@@ -139,8 +139,8 @@ export const propertyModel = {
 
   deleteProperty: async (propertyId: number): Promise<any> => {
     try {
-      const pool = await connectToDatabase();
-      const connection = await pool.getConnection();
+      const connection = await connectToDatabase();
+      // const connection = await pool.getConnection();
       const result = await connection.query(
         "DELETE FROM Properties WHERE id_property = ?",
         [propertyId]

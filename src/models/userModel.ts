@@ -11,8 +11,8 @@ export interface IUser {
 export const userModel = {
   getAllUsers: async (): Promise<any[]> => {
     try {
-      const pool = await connectToDatabase();
-      const connection = await pool.getConnection();
+      const connection = await connectToDatabase();
+      // const connection = await pool.getConnection();
       const [rows] = await connection.query("SELECT * FROM Users");
       connection.release();
       return rows as any;
@@ -23,8 +23,8 @@ export const userModel = {
 
   getUserById: async (userId: number): Promise<any> => {
     try {
-      const pool = await connectToDatabase();
-      const connection = await pool.getConnection();
+      const connection = await connectToDatabase();
+      // const connection = await pool.getConnection();
       const [user] = await connection.query(
         "SELECT * FROM Users WHERE id = ?",
         [userId]
@@ -38,8 +38,8 @@ export const userModel = {
 
   getUserByEmail: async (userEmail: string): Promise<any> => {
     try {
-      const pool = await connectToDatabase();
-      const connection = await pool.getConnection();
+      const connection = await connectToDatabase();
+      // const connection = await pool.getConnection();
       const [user] = await connection.query(
         "SELECT * FROM Users WHERE email = ?",
         [userEmail]
@@ -53,8 +53,8 @@ export const userModel = {
 
   createUser: async (user: IUser): Promise<any> => {
     try {
-      const pool = await connectToDatabase();
-      const connection = await pool.getConnection();
+      const connection = await connectToDatabase();
+      // const connection = await pool.getConnection();
       const result = await connection.query("INSERT INTO Users SET ?", user);
       connection.release();
       return result;
@@ -65,8 +65,8 @@ export const userModel = {
 
   updateUser: async (userId: number, userData: IUser): Promise<any> => {
     try {
-      const pool = await connectToDatabase();
-      const connection = await pool.getConnection();
+      const connection = await connectToDatabase();
+      // const connection = await pool.getConnection();
 
       const result = await connection.query("UPDATE Users SET ? WHERE id = ?", [
         userData,
@@ -81,8 +81,8 @@ export const userModel = {
 
   deleteUser: async (userId: number): Promise<any> => {
     try {
-      const pool = await connectToDatabase();
-      const connection = await pool.getConnection();
+      const connection = await connectToDatabase();
+      // const connection = await pool.getConnection();
       const result = await connection.query("DELETE FROM Users WHERE id = ?", [
         userId,
       ]);

@@ -12,8 +12,8 @@ export interface IRental {
 export const rentalModel = {
   getAllRentals: async (): Promise<any[]> => {
     try {
-      const pool = await connectToDatabase();
-      const connection = await pool.getConnection();
+      const connection = await connectToDatabase();
+      // const connection = await pool.getConnection();
       const [rows] = await connection.query("SELECT * FROM Rentals");
       connection.release();
       return rows as any[];
@@ -24,8 +24,8 @@ export const rentalModel = {
 
   getRentalByLocationId: async (rentalId: number): Promise<any> => {
     try {
-      const pool = await connectToDatabase();
-      const connection = await pool.getConnection();
+      const connection = await connectToDatabase();
+      // const connection = await pool.getConnection();
       const [rows] = await connection.query("SELECT * FROM Rentals WHERE id_location = ?", [rentalId]);
       connection.release();
       return rows as any[];
@@ -36,8 +36,8 @@ export const rentalModel = {
 
   getRentalByPropertyId: async (propertyId: number): Promise<any> => {
     try {
-      const pool = await connectToDatabase();
-      const connection = await pool.getConnection();
+      const connection = await connectToDatabase();
+      // const connection = await pool.getConnection();
       const [rows] = await connection.query("SELECT * FROM Rentals WHERE id_property = ?", [propertyId]);
       console.log(rows);
       
@@ -50,8 +50,8 @@ export const rentalModel = {
 
   createRental: async (rental: IRental, propertyId: number): Promise<any> => {
     try {
-      const pool = await connectToDatabase();
-      const connection = await pool.getConnection();
+      const connection = await connectToDatabase();
+      // const connection = await pool.getConnection();
       
       // Check for overlapping rentals
       const overlapQuery = `
@@ -91,8 +91,8 @@ export const rentalModel = {
 
   updateRental: async (rentalId: number, rentalData: IRental): Promise<any> => {
     try {
-      const pool = await connectToDatabase();
-      const connection = await pool.getConnection();
+      const connection = await connectToDatabase();
+      // const connection = await pool.getConnection();
   
       // Retrieve property ID for the rental being updated
       const [propertyIdRow]: any[] = await connection.query("SELECT id_property FROM Rentals WHERE id_location = ?", rentalId);
@@ -141,8 +141,8 @@ export const rentalModel = {
 
   deleteRental: async (rentalId: number): Promise<any> => {
     try {
-      const pool = await connectToDatabase();
-      const connection = await pool.getConnection();
+      const connection = await connectToDatabase();
+      // const connection = await pool.getConnection();
       const result = await connection.query("DELETE FROM Rentals WHERE id_location = ?", [rentalId]);
       connection.release();
       return result;
