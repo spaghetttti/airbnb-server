@@ -1,4 +1,13 @@
 # airbnb-server
+Pour démarrer le serveur localement : assurez-vous d'avoir la même base de données SQL et les mêmes tables nécessaires à ce projet : Propriété, Utilisateurs, Locations. les fichiers de dump SQL avec la structure de base de données, les tables et les données sont fournis dans le dossier "dumps",
+après vous être assuré que votre serveur SQL est en cours d'exécution, continuez et configurez le fichier db.config.ts avec vos informations d'identification.
+Étape suivante si vous devez supprimer le dossier node_modules et le réinstaller vous-même avec la commande "npm install".
+une fois installé, vous êtes prêt à exécuter le serveur localement avec la commande "npm run start:dev"
+To start the server locally: make sure you have the same sql db and tables needed for this project: Property , Users, Rentals. sql dump files with db structure, tables and data are provided in "dumps" folder, 
+after making sure that your sql server is running , go ahead and configure db.config.ts file with you credentials. 
+Next step if for you to delete node_modules folder and reintall in yourself with "npm install" command. 
+when installed , you are ready to run server locally with command "npm run start:dev" 
+
 
 version française 
 Ce backend comprend un serveur Express.js servant de backend à l'application. Il gère divers itinéraires pour les utilisateurs, les propriétés et les locations à l'aide de contrôleurs, de routeurs, de services et de modèles. L'application utilise une base de données MySQL pour stocker et récupérer les données relatives aux utilisateurs, aux propriétés et aux locations.
